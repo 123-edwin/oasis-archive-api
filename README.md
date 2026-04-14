@@ -28,7 +28,7 @@ Backend de la API para **Oasis Archive**, una plataforma dedicada a la gestión 
 ## ⚙️ Instalación
 1. Clona el repositorio:
    ```bash
-   git clone https://github.com/tu-usuario/oasis-archive-api.git
+   git clone https://github.com/123-edwin/oasis-archive-api.git
    cd oasis-archive-api
    ```
 2. Instala las dependencias:
