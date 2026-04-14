@@ -5,6 +5,8 @@ import { envs } from './config/envs.js'
 import authRoutes from './routes/auth.routes.js'
 import entriesRoutes from './routes/entries.routes.js'
 import favoriteRoutes from './routes/favorites.routes.js'
+import swaggerUi from 'swagger-ui-express';
+import { swaggerSpec } from './config/swagger.js';
 
 const app = express();
 
@@ -21,6 +23,8 @@ app.use('/api/favorites', favoriteRoutes);
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome to The Oasis Archive API' });
 });
+//Documentacion
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 const PORT = envs.PORT|| 3000;
 
