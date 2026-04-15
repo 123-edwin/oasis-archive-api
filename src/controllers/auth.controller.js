@@ -15,14 +15,14 @@ export const login = async (req, res) => {
         if (!isMatch) return res.status(401).json({ message: 'Credenciales inválidas' });
 
         const token = jwt.sign(
-            { id: user.id, role: user.role },
+            { id: user.id, role: user.role, email: user.email },
             envs.JWT_SECRET,
             { expiresIn: '8h' }
         );
 
         res.json({
             token,
-            user: { id: user.id, email: user.email, role: user.role }
+            user: { id: user.id, name: user.name, email: user.email, role: user.role }
         });
     } catch (error) {
         res.status(500).json({ message: 'Error en el servidor', error: error.message });
@@ -31,7 +31,7 @@ export const login = async (req, res) => {
 
 // REGISTER: Para usuarios nuevos (tipo USER por defecto)
 export const register = async (req, res) => {
-    const { email, password } = req.body;
+    const { name, email, password } = req.body;
 
     try {
         const userExists = await prisma.user.findUnique({ where: { email } });
@@ -41,6 +41,7 @@ export const register = async (req, res) => {
 
         const newUser = await prisma.user.create({
             data: {
+                name,
                 email,
                 password: hashedPassword
             }
@@ -48,7 +49,7 @@ export const register = async (req, res) => {
 
         res.status(201).json({
             message: 'Usuario creado exitosamente',
-            user: { id: newUser.id, email: newUser.email }
+            user: { id: newUser.id, name: newUser.name, email: newUser.email }
         });
     } catch (error) {
         res.status(500).json({ message: 'Error al registrar usuario', error: error.message });

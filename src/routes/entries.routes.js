@@ -99,6 +99,10 @@ router.get('/', getEntries);
  *                 type: string
  *                 nullable: true
  *                 example: "4uLU6hMCjMI75M1A2tKUQC"
+ *               albumArt:
+ *                 type: string
+ *                 nullable: true
+ *                 example: "https://i.scdn.co/image/ab67616d0000b273..."
  *     responses:
  *       201:
  *         description: Reseña creada exitosamente

@@ -9,12 +9,10 @@ export const validateJWT = (req, res, next) => {
   }
 
   try {
-    const { id, role } = jwt.verify(token, envs.JWT_SECRET);
-    
-    // Añadimos los datos del usuario al objeto request para que los controladores lo usen
-    req.uid = id;
-    req.uRole = role;
-
+    const decoded = jwt.verify(token, envs.JWT_SECRET);
+    req.uid = decoded.id;
+    req.uRole = decoded.role;
+    req.uEmail = decoded.email || decoded.user?.email || null;
     next();
   } catch (error) {
     res.status(401).json({ message: 'Token no válido' });

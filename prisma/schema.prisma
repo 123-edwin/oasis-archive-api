@@ -20,6 +20,7 @@ enum Role {
 
 model User {
   id        String     @id @default(uuid())
+  name      String?
   email     String     @unique
   password  String
   role      Role       @default(USER)
@@ -34,6 +35,7 @@ model Entry {
   content        String   @db.Text
   rating         Int      @default(5)
   spotifyTrackId String?
+  albumArt       String?
   createdAt      DateTime @default(now())
   userId         String
   user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)

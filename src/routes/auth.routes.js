@@ -1,7 +1,18 @@
 import { Router } from 'express';
 import { login, register } from '../controllers/auth.controller.js';
+import { validateJWT } from '../middlewares/auth.middleware.js';
+
 
 const router = Router();
+
+// GET /auth/me
+router.get('/me', validateJWT, (req, res) => {
+	res.json({
+		id: req.uid, 
+        role: req.uRole,
+		email: req.uEmail,
+	});
+});
 
 /**
  * @swagger
@@ -72,9 +83,13 @@ router.post('/login', login);
  *           schema:
  *             type: object
  *             required:
+ *               - name
  *               - email
  *               - password
  *             properties:
+ *               name:
+ *                 type: string
+ *                 example: "Liam Gallagher"
  *               email:
  *                 type: string
  *                 format: email
@@ -100,6 +115,9 @@ router.post('/login', login);
  *                     id:
  *                       type: string
  *                       example: uuid
+ *                     name:
+ *                       type: string
+ *                       example: "Liam Gallagher"
  *                     email:
  *                       type: string
  *                       example: newuser@example.com

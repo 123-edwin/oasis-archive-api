@@ -2,7 +2,7 @@ import { prisma } from '../config/db.js';
 import { searchOasisTrack } from '../services/spotify.service.js';
 
 export const createEntry = async (req, res) => {
-  const { title, content, rating, spotifyTrackId } = req.body;
+  const { title, content, rating, spotifyTrackId, albumArt } = req.body;
   const userId = req.uid; // Obtenido del token en el middleware
 
   try {
@@ -12,6 +12,7 @@ export const createEntry = async (req, res) => {
         content,
         rating,
         spotifyTrackId,
+        albumArt,
         userId
       }
     });
@@ -25,9 +26,17 @@ export const createEntry = async (req, res) => {
 export const getEntries = async (req, res) => {
   try {
     const entries = await prisma.entry.findMany({
-      include: {
+      select: {
+        id: true,
+        title: true,
+        content: true,
+        rating: true,
+        spotifyTrackId: true,
+        albumArt: true,
+        createdAt: true,
+        userId: true, // <-- necesario para filtrar en frontend
         user: {
-          select: { email: true, role: true } // Traemos datos del autor, pero sin el password
+          select: { name: true, email: true, role: true }
         }
       },
       orderBy: { createdAt: 'desc' }
@@ -40,7 +49,7 @@ export const getEntries = async (req, res) => {
 
 export const updateEntry = async (req, res) => {
   const { id } = req.params;
-  const { title, content, rating } = req.body;
+  const { title, content, rating, albumArt } = req.body;
   const userId = req.uid;
   const userRole = req.uRole;
 
@@ -56,7 +65,7 @@ export const updateEntry = async (req, res) => {
 
     const updated = await prisma.entry.update({
       where: { id },
-      data: { title, content, rating }
+      data: { title, content, rating, albumArt }
     });
 
     res.json(updated);

@@ -5,7 +5,7 @@ export const searchOasisTrack = async (query) => {
   // si el usuario solo pone el nombre de una canción.
   const searchQuery = query.toLowerCase().includes('oasis') ? query : `${query} Oasis`;
   
-  const url = `https://${envs.RAPIDAPI_HOST}/search/?q=${encodeURIComponent(searchQuery)}&type=tracks&offset=0&limit=10&numberOfTopResults=5`;
+  const url = `https://${envs.RAPIDAPI_HOST}/search/?q=${encodeURIComponent(searchQuery)}&type=tracks&artist&offset=0&limit=50&numberOfTopResults=50`;
   
   const options = {
     method: 'GET',
