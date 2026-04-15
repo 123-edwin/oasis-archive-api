@@ -11,7 +11,10 @@ import { swaggerSpec } from './config/swagger.js';
 const app = express();
 
 // Middlewares
-app.use(cors());
+app.use(cors({
+  origin: envs.FRONTEND_URL,
+  credentials: true
+}));
 app.use(morgan('dev'));
 app.use(express.json());
 
